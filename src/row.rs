@@ -19,7 +19,7 @@ impl Row {
 
     pub fn show_bitmap(&self, bitmap: Bitmap<8>) -> String {
         let mut output = String::new();
-        output.push_str("[");
+        output.push('[');
         for (i, value) in self.row.iter().enumerate() {
             if bitmap.get(i) {
                 output.push_str(" <");
@@ -31,7 +31,7 @@ impl Row {
                 output.push_str("  ");
             }
         }
-        output.push_str("]");
+        output.push(']');
         output
     }
 }

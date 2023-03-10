@@ -1,11 +1,20 @@
 mod permutations;
+mod row;
+mod strategy;
 
-use permutations::{row_permutations, row_bitmap_debug};
+use row::Row;
 
 fn main() {
-    let sum = 16;
-    let row = &vec![5, 9, 7, 3, 6, 1, 5];
-    for bitmap in row_permutations(sum, row) {
-        println!("{}", row_bitmap_debug(row, bitmap));
+    let row = Row {
+        row: vec![1, 2, 5, 5],
+        sum: 10,
+    };
+
+    for bitmap in row.permutations() {
+        println!("Possibility: {}", row.show_bitmap(bitmap));
+    }
+
+    for value in row.safe_to_remove() {
+        println!("Safe to remove: {}", value);
     }
 }

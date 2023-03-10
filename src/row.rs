@@ -1,4 +1,5 @@
 use bitmaps::Bitmap;
+use std::collections::HashSet;
 
 use crate::permutations::row_permutations;
 use crate::strategy::safe_to_remove;
@@ -13,7 +14,7 @@ impl Row {
         row_permutations(self.sum, &self.row)
     }
 
-    pub fn safe_to_remove(&self) -> Vec<usize> {
+    pub fn safe_to_remove(&self) -> HashSet<usize> {
         safe_to_remove(self)
     }
 

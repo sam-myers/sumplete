@@ -60,17 +60,17 @@ impl CellGroup {
     }
 
     fn permutations(&self) -> Vec<CellSelection> {
-        self.permutations_recur(CellSelection::new(), 0).unwrap()
+        self.permutations_recur(CellSelection::new(), 0, 0).unwrap()
     }
 
     fn permutations_recur(
         &self,
         selection: CellSelection,
         current_index: usize,
+        current_sum: usize,
     ) -> Option<Vec<CellSelection>> {
         let mut results: Vec<CellSelection> = Vec::new();
-
-        match self.sum_of_selection(&selection).cmp(&self.target_sum) {
+        match current_sum.cmp(&self.target_sum) {
             std::cmp::Ordering::Greater => return None,
             std::cmp::Ordering::Equal => {
                 results.push(selection);
@@ -83,15 +83,31 @@ impl CellGroup {
             return None;
         }
 
-        let mut selection_2 = selection.clone();
-        selection_2.set(current_index, true);
+        let mut calc_selected = true;
+        let mut calc_deselected = true;
 
-        if let Some(r) = self.permutations_recur(selection_2, current_index + 1) {
-            results.extend(r);
+        let current_cell = &self.cells[current_index];
+        match current_cell.status {
+            CellStatus::Unknown => (),
+            CellStatus::Known => calc_deselected = false,
+            CellStatus::Removed => calc_selected = false,
         }
 
-        if let Some(r) = self.permutations_recur(selection, current_index + 1) {
-            results.extend(r);
+        if calc_selected {
+            let selected_sum = current_sum + current_cell.value;
+            let mut s = selection.clone();
+            s.set(current_index, true);
+            if let Some(r) = self.permutations_recur(s, current_index + 1, selected_sum) {
+                results.extend(r);
+            }
+        }
+
+        if calc_deselected {
+            let mut s = selection.clone();
+            s.set(current_index, false);
+            if let Some(r) = self.permutations_recur(s, current_index + 1, current_sum) {
+                results.extend(r);
+            }
         }
 
         Some(results)
@@ -104,7 +120,7 @@ impl CellGroup {
         let mut all = CellSelection::new();
 
         for (_, selection) in perms.iter().enumerate() {
-            all = all.bitor(selection)
+            all = all.bitor(selection);
         }
 
         for i in 0..self.cells.len() {

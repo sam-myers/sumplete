@@ -4,7 +4,7 @@ use std::fmt;
 pub enum CellStatus {
     Unknown,
     Known,
-    Removed
+    Removed,
 }
 
 impl fmt::Display for CellStatus {

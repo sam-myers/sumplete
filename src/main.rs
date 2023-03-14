@@ -1,23 +1,20 @@
 mod cell;
-mod row;
-mod strategy;
 mod cell_group;
-mod cell_status;
 mod cell_group_location;
+mod cell_selection;
+mod cell_status;
 
-use row::Row;
+use crate::cell::Cell;
+use crate::cell_group::CellGroup;
+use crate::cell_group_location::CellGroupLocation;
 
 fn main() {
-    let row = Row {
-        row: vec![1, 2, 5, 5],
-        sum: 10,
-    };
+    let mut row = CellGroup::new(
+        CellGroupLocation::Row(0),
+        vec![Cell::new(1), Cell::new(2), Cell::new(5), Cell::new(5)],
+        10,
+    );
 
-    for bitmap in row.permutations() {
-        println!("Possibility: {}", row.show_bitmap(bitmap));
-    }
-
-    for value in row.safe_to_remove() {
-        println!("Safe to remove: {}", value);
-    }
+    row = row.solve();
+    println!("{}", row);
 }

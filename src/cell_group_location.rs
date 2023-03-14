@@ -1,5 +1,6 @@
 use std::fmt;
 
+#[derive(Debug, PartialEq, Hash)]
 pub enum CellGroupLocation {
     Row(usize),
     Column(usize),

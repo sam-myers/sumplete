@@ -1,10 +1,13 @@
+use std::collections::hash_map::DefaultHasher;
 use std::fmt;
+use std::hash::{Hash, Hasher};
 
 use crate::cell::Cell;
 use crate::cell_group_location::CellGroupLocation;
 use crate::cell_selection::CellSelection;
 use crate::cell_status::CellStatus;
 
+#[derive(Debug, PartialEq, Hash)]
 pub struct CellGroup {
     pub location: CellGroupLocation,
     pub cells: Vec<Cell>,
@@ -56,6 +59,7 @@ impl CellGroup {
 
     pub fn solve(mut self) -> Self {
         self = self.mark_removed();
+        self = self.mark_known();
         self
     }
 
@@ -114,12 +118,12 @@ impl CellGroup {
     }
 
     fn mark_removed(mut self) -> Self {
-        self.generation += 1;
+        let old_hash = self.hash_value();
 
-        let perms = self.permutations();
+        let permutations = self.permutations();
         let mut all = CellSelection::new();
 
-        for (_, selection) in perms.iter().enumerate() {
+        for (_, selection) in permutations.iter().enumerate() {
             all = all.bitor(selection);
         }
 
@@ -129,7 +133,40 @@ impl CellGroup {
             }
         }
 
+        if old_hash != self.hash_value() {
+            self.generation += 1;
+        }
+
         self
+    }
+
+    fn mark_known(mut self) -> Self {
+        let old_hash = self.hash_value();
+
+        let permutations = self.permutations();
+        let mut all = CellSelection::new_full();
+
+        for (_, selection) in permutations.iter().enumerate() {
+            all = all.bitand(selection);
+        }
+
+        for i in 0..self.cells.len() {
+            if all.get(i) {
+                self.cells[i].status = CellStatus::Known;
+            }
+        }
+
+        if old_hash != self.hash_value() {
+            self.generation += 1;
+        }
+
+        self
+    }
+
+    fn hash_value(&self) -> u64 {
+        let mut hasher = DefaultHasher::new();
+        self.hash(&mut hasher);
+        hasher.finish()
     }
 }
 

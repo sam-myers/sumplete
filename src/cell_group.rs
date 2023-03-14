@@ -58,6 +58,15 @@ impl CellGroup {
     }
 
     pub fn solve(mut self) -> Self {
+        let mut last_generation = usize::MAX;
+        while self.generation != last_generation {
+            last_generation = self.generation;
+            self = self.solve_round();
+        }
+        self
+    }
+
+    pub fn solve_round(mut self) -> Self {
         self = self.mark_removed();
         self = self.mark_known();
         self

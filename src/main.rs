@@ -11,8 +11,15 @@ use crate::cell_group_location::CellGroupLocation;
 fn main() {
     let mut row = CellGroup::new(
         CellGroupLocation::Row(0),
-        vec![Cell::new(1), Cell::new(2), Cell::new(5), Cell::new(5)],
-        10,
+        vec![
+            Cell::new(8),
+            Cell::new(2),
+            Cell::new(5),
+            Cell::new(7),
+            Cell::new(5),
+            Cell::new(3),
+         ],
+        25,
     );
 
     println!("{}", row);

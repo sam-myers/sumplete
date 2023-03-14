@@ -9,6 +9,7 @@ pub struct CellGroup {
     pub location: CellGroupLocation,
     pub cells: Vec<Cell>,
     pub target_sum: usize,
+    generation: usize,
 }
 
 impl CellGroup {
@@ -17,6 +18,7 @@ impl CellGroup {
             location,
             cells,
             target_sum,
+            generation: 0,
         }
     }
 
@@ -50,6 +52,11 @@ impl CellGroup {
         }
         output.push(']');
         output
+    }
+
+    pub fn solve(mut self) -> Self {
+        self = self.mark_removed();
+        self
     }
 
     fn permutations(&self) -> Vec<CellSelection> {
@@ -91,6 +98,8 @@ impl CellGroup {
     }
 
     fn mark_removed(mut self) -> Self {
+        self.generation += 1;
+
         let perms = self.permutations();
         let mut all = CellSelection::new();
 
@@ -104,11 +113,6 @@ impl CellGroup {
             }
         }
 
-        self
-    }
-
-    pub fn solve(mut self) -> Self {
-        self = self.mark_removed();
         self
     }
 }

@@ -1,21 +1,8 @@
 use std::fmt;
 
 use crate::cell::Cell;
+use crate::cell_group_location::CellGroupLocation;
 use crate::cell_status::CellStatus;
-
-pub enum CellGroupLocation {
-    Row(usize),
-    Column(usize),
-}
-
-impl fmt::Display for CellGroupLocation {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        match self {
-            CellGroupLocation::Column(i) => write!(f, "Column({})", i),
-            CellGroupLocation::Row(i) => write!(f, "Row({})", i),
-        }
-    }
-}
 
 pub struct CellGroup {
     pub location: CellGroupLocation,

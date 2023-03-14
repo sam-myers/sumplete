@@ -3,6 +3,7 @@ mod row;
 mod strategy;
 mod cell_group;
 mod cell_status;
+mod cell_group_location;
 
 use row::Row;
 

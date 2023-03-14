@@ -15,6 +15,7 @@ fn main() {
         10,
     );
 
+    println!("{}", row);
     row = row.solve();
     println!("{}", row);
 }

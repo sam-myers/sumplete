@@ -2,7 +2,7 @@ use std::fmt;
 
 use crate::cell_status::CellStatus;
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Hash)]
 pub struct Cell {
     pub value: usize,
     pub status: CellStatus,

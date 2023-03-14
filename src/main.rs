@@ -1,6 +1,8 @@
-mod permutations;
+mod cell;
 mod row;
 mod strategy;
+mod cell_group;
+mod cell_status;
 
 use row::Row;
 

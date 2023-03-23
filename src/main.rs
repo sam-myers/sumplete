@@ -8,7 +8,19 @@ use crate::cell::Cell;
 use crate::cell_group::CellGroup;
 use crate::cell_group_location::CellGroupLocation;
 
+#[macro_use]
+extern crate slog;
+extern crate slog_async;
+extern crate slog_term;
+
+use slog::Drain;
+
 fn main() {
+    let decorator = slog_term::TermDecorator::new().build();
+    let drain = slog_term::FullFormat::new(decorator).build().fuse();
+    let drain = slog_async::Async::new(drain).build().fuse();
+    let _log = slog::Logger::root(drain, o!());
+
     let mut row = CellGroup::new(
         CellGroupLocation::Row(0),
         vec![
@@ -18,11 +30,11 @@ fn main() {
             Cell::new(7),
             Cell::new(5),
             Cell::new(3),
-         ],
+        ],
         25,
     );
 
-    println!("{}", row);
+    info!(_log, "{}", row);
     row = row.solve();
-    println!("{}", row);
+    info!(_log, "{}", row);
 }

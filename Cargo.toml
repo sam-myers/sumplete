@@ -8,3 +8,6 @@ edition = "2021"
 
 [dependencies]
 bitmaps = "3.2.0"
+slog = "2.7.0"
+slog-async = "2.7.0"
+slog-term = "2.9.0"
